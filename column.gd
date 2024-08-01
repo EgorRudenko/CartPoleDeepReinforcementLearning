@@ -103,7 +103,7 @@ func _ready():
 	
 
 func _process(delta):
-	movement(delta, determineActionFromKeyboard())
+	movement(delta, action)
 	communicate()
 	if (gameOver == 1):
 		reinit()
