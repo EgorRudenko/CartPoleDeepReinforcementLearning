@@ -7,7 +7,20 @@ import pickle
 #rng = np.random.default_rng(seed=5)
 rng = np.random  # could be used to define specific seed
 
+
+decay_rate = 0.9        # how fast previous changes in weight become irrelevant (bigger - slower)
+gamma = 0.99    # importance of long term success over short term
 toLearn = False
+to_load = True
+saveFrequency = 500
+batch_size = 10             # update weights every 10 iterations
+learning_rate = 1e-4
+D: int = 3  # input layer neurons number
+H: int = 150  # first hidden layer neurons number
+H1: int = 100   # second hidden layer neurons number
+H2: int = 50    # third hidden layer neurons number
+
+
 def sigmoid(x):                         # activation function on the output layer
     return 1.0 / (1.0 + np.exp(-x))
 
@@ -69,12 +82,7 @@ hs2 = []
 dlogps: list = []
 # All rewards for the episode.
 drs = []
-
-decay_rate = 0.9        # how fast previous changes in weight become irrelevant (bigger - slower)
 episode_number = 0      # what episode are we playing
-
-gamma = 0.99    # importance of long term success over short term
-
 
 def discount_rewards(r, gamma):  # r are rewards
     # in this function we want to make sequences of good actions more important than just good actions
@@ -89,24 +97,14 @@ def discount_rewards(r, gamma):  # r are rewards
         discounted_r[t] = running_add
     return discounted_r
 
-
-batch_size = 10             # update weights every 10 iterations
-learning_rate = 1e-4
 running_reward = None
 reward_sum = 0
-
-D: int = 3  # input layer neurons number
-H: int = 150  # hidden layer neurons number
-H1: int = 100
-H2: int = 50
-
 
 def xavier_init(fan_in, fan_out):
     limit = np.sqrt(6 / (fan_in + fan_out))
     return np.random.uniform(-limit, limit, size=(fan_out, fan_in))
 
 
-prev_time = 0
 model = {
     "W1": xavier_init(D, H),  # Input => hidden weights
     "W2": xavier_init(H, H1),
@@ -129,7 +127,6 @@ try:
     num = np.load("num.npy")
 except:
     num = 0
-to_load = True
 
 if to_load:
     model = load_dict(f'model{num-1}')
@@ -229,7 +226,7 @@ def ai(input_layer):
             )
 
             reward_sum = 0
-            if episode_number % 500 == 0:
+            if episode_number % saveFrequency == 0:
                 save_dict(model, f'model{num}')
                 num += 1
                 np.save('num', num)
