@@ -10,7 +10,7 @@ rng = np.random  # could be used to define specific seed
 
 decay_rate = 0.9        # how fast previous changes in weight become irrelevant (bigger - slower)
 gamma = 0.99    # importance of long term success over short term
-toLearn = False
+toLearn = True
 to_load = True
 saveFrequency = 500
 batch_size = 10             # update weights every 10 iterations
