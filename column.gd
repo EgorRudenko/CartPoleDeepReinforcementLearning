@@ -53,6 +53,7 @@ func communicate() -> void:
 	var state = client.get_ready_state()
 	if state == WebSocketPeer.STATE_OPEN:
 		client.send_text(str(rotation/(PI/2), " ", speedX/5, " ", angularSpeed/0.04, " ", gameOver))
+		action = 0;
 		while client.get_available_packet_count():
 			action = int(client.get_packet().get_string_from_utf8())
 	elif state == WebSocketPeer.STATE_CLOSED:
