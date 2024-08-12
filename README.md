@@ -1,5 +1,5 @@
 # CartPoleDeepReinforcementLearning
- Cart Pole solved by neural network </br>
+ Cart Pole solved by neural network (kind of. I didn't let it train for too long, but I does well. A few more hours and it will be perfect)</br>
  
  dependencies: numpy, websockets</br>
  they are also in requirements.txt</br>
